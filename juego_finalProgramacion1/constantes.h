@@ -9,7 +9,7 @@
 int POS_X = 0;
 int POS_Y = 0;
 
-int VELOCIDAD_JUEGO = 75;
+int VELOCIDAD_JUEGO = 50;
 
 char PANTALLA[PANTALLA_HEIGHT][PANTALLA_WIDTH];
 const char PARED_CHAR = '*';

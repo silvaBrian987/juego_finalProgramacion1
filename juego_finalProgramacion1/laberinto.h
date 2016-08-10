@@ -42,13 +42,13 @@ void moverse() {
 	JUGADOR[0][1] = POS_Y;
 }
 
-void dibujarLineaVertical(int posX, int posInicio, int posFin) {
+void dibujarParedVertical(int posX, int posInicio, int posFin) {
 	for (int i = posInicio; i <= posFin; i++) {
 		PANTALLA[i][posX] = PARED_CHAR;
 	}
 }
 
-void dibujarLineaHorizontal(int posY, int posInicio, int posFin) {
+void dibujarParedHorizontal(int posY, int posInicio, int posFin) {
 	for (int i = posInicio; i <= posFin; i++) {
 		PANTALLA[posY][i] = PARED_CHAR;
 	}
@@ -56,10 +56,15 @@ void dibujarLineaHorizontal(int posY, int posInicio, int posFin) {
 
 //Esto es para un mapa de 75x20
 void dibujarLaberinto() {
-	dibujarLineaVertical(25, 5, 15);
-	dibujarLineaHorizontal(15, 25, 40);
-	dibujarLineaVertical(40, 5, 15);
-	dibujarLineaHorizontal(5, 25, 40);
+	dibujarParedVertical(25, 5, 15);
+	dibujarParedHorizontal(15, 25, 40);
+	dibujarParedVertical(40, 5, 15);
+	dibujarParedHorizontal(5, 25, 40);
+
+	dibujarParedVertical(27, 7, 13);
+	dibujarParedHorizontal(13, 27, 38);
+	dibujarParedVertical(38, 7, 13);
+	dibujarParedHorizontal(7, 27, 38);
 }
 
 void dibujarMapa() {
@@ -78,7 +83,7 @@ void dibujarMapa() {
 	//Salida
 	PANTALLA[POS_X_Y_SALIDA[1]][POS_X_Y_SALIDA[0]] = FONDO_CHAR;
 
-	//dibujarLaberinto();
+	dibujarLaberinto();
 }
 
 void inicializarJugador() {

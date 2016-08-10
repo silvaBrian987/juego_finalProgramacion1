@@ -89,6 +89,9 @@
     <ClInclude Include="viborita.h" />
     <ClInclude Include="viborita_ncurses.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Marine\Desktop\grilla_20x75.xlsx" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

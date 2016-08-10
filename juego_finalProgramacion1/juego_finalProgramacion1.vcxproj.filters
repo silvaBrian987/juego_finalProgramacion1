@@ -36,4 +36,7 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Marine\Desktop\grilla_20x75.xlsx" />
+  </ItemGroup>
 </Project>
