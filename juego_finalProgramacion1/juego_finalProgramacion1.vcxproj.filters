@@ -37,7 +37,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\Marine\Desktop\grilla_20x75.xlsx" />
     <None Include="pdcurses.dll" />
   </ItemGroup>
 </Project>
