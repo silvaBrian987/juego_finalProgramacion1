@@ -5,35 +5,10 @@
 
 using namespace std;
 
-void moveUP(){
-	isUP = true;
-	isDOWN = false;
-	isRIGHT = false;
-	isLEFT = false;
-}
-
-void moveDOWN(){
-	isUP = false;
-	isDOWN = true;
-	isRIGHT = false;
-	isLEFT = false;
-}
-
-void moveRIGHT(){
-	isUP = false;
-	isDOWN = false;
-	isRIGHT = true;
-	isLEFT = false;
-}
-
-void moveLEFT(){
-	isUP = false;
-	isDOWN = false;
-	isRIGHT = false;
-	isLEFT = true;
-}
-
 void moverse(){
+	POS_X = SNAKE[0][0];
+	POS_Y = SNAKE[0][1];
+
 	if (isUP){
 		POS_Y--;
 	}
@@ -48,8 +23,8 @@ void moverse(){
 	}
 
 	//Actualizo la posicion
-	SNAKE[0][0] = POS_Y;
-	SNAKE[0][1] = POS_X;
+	SNAKE[0][0] = POS_X;
+	SNAKE[0][1] = POS_Y;
 }
 
 void dibujarMapa(){
@@ -74,14 +49,14 @@ void inicializarSerpiente(){
 	}
 
 	//Posicion inicial
-	SNAKE[0][0] = POS_Y;
-	SNAKE[0][1] = POS_X;
+	SNAKE[0][0] = POS_X;
+	SNAKE[0][1] = POS_Y;
 }
 
 void inicializarPantalla(){
 	for (int h = 0; h < PANTALLA_HEIGHT; h++){
 		for (int w = 0; w < PANTALLA_WIDTH; w++){
-			PANTALLA[h][w] = PARED_CHAR;
+			PANTALLA[h][w] = FONDO_CHAR;
 		}
 	}
 	dibujarMapa();
@@ -131,8 +106,8 @@ void actualizarSerpientePantalla(){
 	int y = 0;
 
 	for (int s = 0; s < SNAKE_MAX_SIZE; s++){
-		y = SNAKE[s][0];
-		x = SNAKE[s][1];
+		x = SNAKE[s][0];
+		y = SNAKE[s][1];
 		if (y != -1 && x != -1) PANTALLA[y][x] = SNAKE_CHAR;
 	}
 }

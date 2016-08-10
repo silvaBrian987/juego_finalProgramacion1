@@ -1,4 +1,5 @@
-#include "viborita_ncurses.h"
+//#include "viborita_ncurses.h"
+#include "laberinto.h"
 
 void main(){
 	//cout << "Final Programacion I 2016" << endl;

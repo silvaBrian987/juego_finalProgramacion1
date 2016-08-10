@@ -2,102 +2,211 @@
 #include "funciones.h"
 using namespace std;
 
-#define PANTALLA_HEIGHT 20
-#define PANTALLA_WIDTH 75
+bool PERDIO = false;
+bool GANO = false;
 
-char PANTALLA[PANTALLA_HEIGHT][PANTALLA_WIDTH];
-int POS_X = 0;
-int POS_Y = 0;
+int POS_X_Y_SALIDA[] = { 45, 0 };
 
-bool esArriba = true;
-bool esDerecha = true;
+bool controlarFinJuego() {
+	if (PERDIO) {
+		limpiarPantalla();
+		imprimirAPantalla("PERDISTE\n");
+		return true;
+	}else if(GANO){
+		limpiarPantalla();
+		imprimirAPantalla("GANASTE\n");
+		return true;
+	}
+	return false;
+}
 
-void dibujarMapa(){
+void moverse() {
+	POS_X = JUGADOR[0][0];
+	POS_Y = JUGADOR[0][1];
+
+	if (isUP) {
+		POS_Y--;
+	}
+	else if (isDOWN) {
+		POS_Y++;
+	}
+	else if (isRIGHT) {
+		POS_X--;
+	}
+	else if (isLEFT) {
+		POS_X++;
+	}
+
+	//Actualizo la posicion
+	JUGADOR[0][0] = POS_X;
+	JUGADOR[0][1] = POS_Y;
+}
+
+void dibujarLineaVertical(int posX, int posInicio, int posFin) {
+	for (int i = posInicio; i <= posFin; i++) {
+		PANTALLA[i][posX] = PARED_CHAR;
+	}
+}
+
+void dibujarLineaHorizontal(int posY, int posInicio, int posFin) {
+	for (int i = posInicio; i <= posFin; i++) {
+		PANTALLA[posY][i] = PARED_CHAR;
+	}
+}
+
+//Esto es para un mapa de 75x20
+void dibujarLaberinto() {
+	dibujarLineaVertical(25, 5, 15);
+	dibujarLineaHorizontal(15, 25, 40);
+	dibujarLineaVertical(40, 5, 15);
+	dibujarLineaHorizontal(5, 25, 40);
+}
+
+void dibujarMapa() {
 	//Paredes horizontales
-	for (int i = 0; i < PANTALLA_WIDTH; i++){
-		PANTALLA[0][i] = 'A';
-		PANTALLA[PANTALLA_HEIGHT - 1][i] = 'A';
+	for (int i = 0; i < PANTALLA_WIDTH; i++) {
+		PANTALLA[0][i] = PARED_CHAR;
+		PANTALLA[PANTALLA_HEIGHT - 1][i] = PARED_CHAR;
 	}
 
 	//Paredes verticales
-	for (int i = 0; i < PANTALLA_HEIGHT; i++){
-		PANTALLA[i][0] = 'A';
-		PANTALLA[i][PANTALLA_WIDTH - 1] = 'A';
+	for (int i = 0; i < PANTALLA_HEIGHT; i++) {
+		PANTALLA[i][0] = PARED_CHAR;
+		PANTALLA[i][PANTALLA_WIDTH - 1] = PARED_CHAR;
 	}
+
+	//Salida
+	PANTALLA[POS_X_Y_SALIDA[1]][POS_X_Y_SALIDA[0]] = FONDO_CHAR;
+
+	//dibujarLaberinto();
 }
 
-void inicializarPantalla(){
-	for (int h = 0; h < PANTALLA_HEIGHT; h++){
-		for (int w = 0; w < PANTALLA_WIDTH; w++){
-			PANTALLA[h][w] = '_';
+void inicializarJugador() {
+	for (int s = 0; s < JUGADOR_MAX_SIZE; s++) {
+		for (int ss = 0; ss < 2; ss++) {
+			JUGADOR[s][ss] = -1;
 		}
 	}
 
+	//Posicion inicial
+	JUGADOR[0][0] = POS_X;
+	JUGADOR[0][1] = POS_Y;
+}
+
+void inicializarPantalla() {
+	for (int h = 0; h < PANTALLA_HEIGHT; h++) {
+		for (int w = 0; w < PANTALLA_WIDTH; w++) {
+			PANTALLA[h][w] = FONDO_CHAR;
+		}
+	}
 	dibujarMapa();
 }
 
-void refrescarPantalla(){
-	system("CLS");
-	//ClearScreen();
-	//RedrawWindow(NULL, NULL, NULL, NULL);
-	//limpiarPantalla();
-	cout << "(" << PANTALLA_WIDTH << "," << PANTALLA_HEIGHT << ") => (" << POS_X << "," << POS_Y << ")" << endl;
+void refrescarPantalla() {
+	limpiarPantalla();
+	//imprimirAPantalla(("time = " + to_string(time(0)) + "\n").c_str());
+	imprimirAPantalla(("(" + to_string(PANTALLA_WIDTH) + "," + to_string(PANTALLA_HEIGHT) + ") => (" + to_string(POS_X) + "," + to_string(POS_Y) + ")" + "\n").c_str());
 	inicializarPantalla();
 }
 
-void manejarColicion_bloquear(){
-	if (POS_Y == 0) POS_Y++;
-	if (POS_Y == PANTALLA_HEIGHT - 1) POS_Y--;
-	if (POS_X == 0) POS_X++;
-	if (POS_X == PANTALLA_WIDTH - 1) POS_X--;
+/*
+void manejarColicion_bloquear(int& x, int& y) {
+	if (y <= 1) y++;
+	if (y == PANTALLA_HEIGHT - 1) y--;
+	if (x <= 1) x++;
+	if (x == PANTALLA_WIDTH - 1) x--;
 }
+*/
 
-void manejarColicion_portal(){
-	if (POS_Y == 0) POS_Y = PANTALLA_HEIGHT - 2;
-	if (POS_Y == PANTALLA_HEIGHT - 1) POS_Y = 1;
-	if (POS_X == 0) POS_X = PANTALLA_WIDTH - 2;
-	if (POS_X == PANTALLA_WIDTH - 1) POS_X = 1;
-}
+void manejarColicion_bloquear(int& x, int& y) {
+	if (PANTALLA[y + 1][x] == PARED_CHAR) {
 
-void manejarColicion(){
-	if (PANTALLA[POS_Y - 1][POS_X - 1] == 'A'){
-		//limpiarPantalla();
-		//cout << "ESTAS POR CHOCAR, WACHIN" << endl;
 	}
 
-	if (PANTALLA[POS_Y][POS_X] == 'A'){
-		//limpiarPantalla();
-		//cout << "VO' SO' BOLUDO? TE DIJE QUE TE IBAS A CHOCAR" << endl;
-		//manejarColicion_portal();
-		manejarColicion_bloquear();
+	if (PANTALLA[y - 1][x] == PARED_CHAR) {
+
+	}
+
+	if (PANTALLA[y][x + 1] == PARED_CHAR) {
+
+	}
+
+	if (PANTALLA[y][x - 1] == PARED_CHAR) {
+
 	}
 }
 
-void *dibujarPantalla(void *arg){
-	refrescarPantalla();
-	//cout << "arg = " << (long) arg << endl;
-	manejarColicion();
-
-	cout << endl;
-
-	PANTALLA[POS_Y][POS_X] = '*';
-
-	for (int h = 0; h < PANTALLA_HEIGHT; h++){
-		for (int w = 0; w < PANTALLA_WIDTH; w++){
-			cout << PANTALLA[h][w];
-		}
-		cout << endl;
-	}
-
-	return NULL;
+void manejarColicion_portal(int& x, int& y) {
+	if (y == 0) y = PANTALLA_HEIGHT - 2;
+	if (y == PANTALLA_HEIGHT - 1) y = 1;
+	if (x == 0) x = PANTALLA_WIDTH - 2;
+	if (x == PANTALLA_WIDTH - 1) x = 1;
 }
 
-void iniciarJuego(){
-	//Objeto Multihilos
+void manejarColicion_finJuego(int& x, int& y) {
+	if (PANTALLA[y][x] == PARED_CHAR) {
+		PERDIO = true;
+	}
+
+	if (x == POS_X_Y_SALIDA[0] && y == POS_X_Y_SALIDA[1]) {
+		GANO = true;
+	}
+}
+
+void manejarColicion() {
+	int x = JUGADOR[0][0];
+	int y = JUGADOR[0][1];
+
 	/*
-	pthread_t pth;
-	pthread_create(&pth, NULL, dibujarPantalla, (void *) "1");
+	if (PANTALLA[y - 1][x - 1] == PARED_CHAR) {
+		//manejarColicion_portal(x,y);
+		//manejarColicion_bloquear(x, y);
+	}
+
+	if (PANTALLA[y][x] == PARED_CHAR) {
+		manejarColicion_bloquear(x, y);
+	}
 	*/
+
+	manejarColicion_finJuego(x, y);
+
+	JUGADOR[0][0] = x;
+	JUGADOR[0][1] = y;
+}
+void actualizarJugadorPantalla() {
+	int x = 0;
+	int y = 0;
+
+	for (int s = 0; s < JUGADOR_MAX_SIZE; s++) {
+		x = JUGADOR[s][0];
+		y = JUGADOR[s][1];
+		if (y != -1 && x != -1) PANTALLA[y][x] = JUGADOR_CHAR;
+	}
+}
+
+void dibujarPantalla() {
+	refrescarPantalla();
+	manejarColicion();
+	actualizarJugadorPantalla();
+
+	imprimirSaltoLinea();
+
+	//string strScreen;
+
+	for (int h = 0; h < PANTALLA_HEIGHT; h++) {
+		for (int w = 0; w < PANTALLA_WIDTH; w++) {
+			//strScreen.push_back(PANTALLA[h][w]);
+			imprimirAPantalla(PANTALLA[h][w]);
+		}
+		//strScreen += "\n";
+		imprimirSaltoLinea();
+	}
+
+	//Dibuja la pantalla
+	//imprimirAPantalla(strScreen);
+}
+
+void iniciarJuego() {
 
 	//Keycode
 	int c;
@@ -106,44 +215,46 @@ void iniciarJuego(){
 	int delta = 5;
 
 	POS_X = (int)(PANTALLA_WIDTH / 2) - 1;
-	POS_Y = (int)PANTALLA_HEIGHT - 5;
+	POS_Y = (int)(PANTALLA_HEIGHT / 2) - 1;
 
-	//inicializarPantalla();
+	inicializarJugador();
 
-	while (1){
-		c = _getch();
-		//cout << "keycode = " << c << endl;
-
-		if (c == 27){
+	while (1) {
+		if (controlarFinJuego()) {
 			break;
 		}
 
-		if (c != 224){
-			switch (c){
+		c = leerTeclado();
+
+		if (c == 27) {
+			break;
+		}
+
+		if (c != 224) {
+			switch (c) {
 			case UP:
-				POS_Y--;
-				//POS_Y < 0 ? POS_Y = PANTALLA_HEIGHT - 2 : POS_Y = POS_Y;
+				moveUP();
 				break;
 			case DOWN:
-				POS_Y++;
-				//POS_Y >= PANTALLA_HEIGHT -1 ? POS_Y = PANTALLA_HEIGHT - 2 : POS_Y = POS_Y;
+				moveDOWN();
 				break;
 			case RIGHT:
-				POS_X--;
-				//POS_X < 0 ? POS_X = PANTALLA_WIDTH - 2 : POS_X = POS_X;
+				moveRIGHT();
 				break;
 			case LEFT:
-				POS_X++;
-				//POS_X >= PANTALLA_WIDTH - 1 ? POS_X = PANTALLA_WIDTH - 2 : POS_X = POS_X;
+				moveLEFT();
 				break;
 			default:
-				//cout << "Gil, que es esto?" << endl;
+				moverse();
 				break;
 			}
 
-			dibujarPantalla(NULL);
+			//Con esto manejo el refresco de la pantalla
+			Sleep(VELOCIDAD_JUEGO);
+			dibujarPantalla();
 		}
 	}
 
-	cout << "Fin de programa" << endl;
+	imprimirAPantalla("\n\n\nFin de programa\n");
+	system("pause");
 }

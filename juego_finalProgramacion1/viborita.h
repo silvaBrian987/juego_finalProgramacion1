@@ -29,6 +29,9 @@ void moveLEFT(){
 }
 
 void moverse(){
+	POS_X = SNAKE[0][0];
+	POS_Y = SNAKE[0][1];
+
 	if (isUP){
 		POS_Y--;
 	}
