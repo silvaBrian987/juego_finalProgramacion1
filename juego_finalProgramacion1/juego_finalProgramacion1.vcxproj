@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\Marine\Desktop\grilla_20x75.xlsx" />
+    <None Include="pdcurses.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
