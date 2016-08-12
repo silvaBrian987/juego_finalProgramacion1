@@ -90,6 +90,8 @@
     <ClInclude Include="viborita_ncurses.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="mapa1.xlsm" />
+    <None Include="mapa1.xlsx" />
     <None Include="pdcurses.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

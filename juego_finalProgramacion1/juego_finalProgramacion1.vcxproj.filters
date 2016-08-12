@@ -38,5 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="pdcurses.dll" />
+    <None Include="mapa1.xlsm" />
+    <None Include="mapa1.xlsx" />
   </ItemGroup>
 </Project>
