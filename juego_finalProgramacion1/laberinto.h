@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "funciones.h"
 using namespace std;
 
@@ -10,11 +10,15 @@ int POS_X_Y_SALIDA[] = { 45, 0 };
 bool controlarFinJuego() {
 	if (PERDIO) {
 		limpiarPantalla();
-		imprimirAPantalla("PERDISTE\n");
+		imprimirAPantalla("****************************\n");
+		imprimirAPantalla("**********PERDISTE**********\n");
+		imprimirAPantalla("****************************\n");
 		return true;
 	}else if(GANO){
 		limpiarPantalla();
-		imprimirAPantalla("GANASTE\n");
+		imprimirAPantalla("***************************\n");
+		imprimirAPantalla("**********GANASTE**********\n");
+		imprimirAPantalla("***************************\n");
 		return true;
 	}
 	return false;
@@ -216,14 +220,26 @@ void dibujarPantalla() {
 
 void iniciarJuego() {
 
+	imprimirAPantalla("***************************\n");
+	imprimirAPantalla("**LABERINTO 0.0.0.0.0.0.1**\n");
+	imprimirAPantalla("***************************\n");
+
+	imprimirAPantalla("Controles:\n");
+	imprimirAPantalla("▲ = arriba\n► = derecha\n▼ = abajo\n◄ = izquierda\nEscape = salir\n");
+
+	imprimirAPantalla("Presione enter para comenzar..\n");
+	std::cin.get();
+
 	//Keycode
 	int c;
 
 	//Por ahi lo use para la aceleracion...
 	int delta = 5;
 
-	POS_X = (int)(PANTALLA_WIDTH / 2) - 1;
-	POS_Y = (int)(PANTALLA_HEIGHT / 2) - 1;
+	//POS_X = (int)(PANTALLA_WIDTH / 2) - 1;
+	//POS_Y = (int)(PANTALLA_HEIGHT / 2) - 1;
+	POS_X = 2;
+	POS_Y = 2;
 
 	inicializarJugador();
 
@@ -258,7 +274,7 @@ void iniciarJuego() {
 			}
 
 			//Con esto manejo el refresco de la pantalla
-			Sleep(VELOCIDAD_JUEGO);
+			Sleep(VELOCIDAD_JUEGO_FACIL);
 			dibujarPantalla();
 		}
 	}

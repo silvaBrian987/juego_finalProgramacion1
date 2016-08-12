@@ -9,7 +9,9 @@
 int POS_X = 0;
 int POS_Y = 0;
 
-int VELOCIDAD_JUEGO = 50;
+int VELOCIDAD_JUEGO_DIFICL = 50;
+int VELOCIDAD_JUEGO_MEDIO = 100;
+int VELOCIDAD_JUEGO_FACIL = 150;
 
 char PANTALLA[PANTALLA_HEIGHT][PANTALLA_WIDTH];
 const char PARED_CHAR = '*';
@@ -26,7 +28,7 @@ const int JUGADOR_MAX_SIZE = 1;
 int JUGADOR[JUGADOR_MAX_SIZE][2];
 const char JUGADOR_CHAR = 'M';
 
-bool isUP = true;
+bool isUP = false;
 bool isDOWN = false;
 bool isRIGHT = false;
 bool isLEFT = false;
